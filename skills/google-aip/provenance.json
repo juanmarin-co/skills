@@ -1,0 +1,20 @@
+{
+  "source": "https://github.com/aip-dev/google.aip.dev",
+  "branch": "master",
+  "commit": "74755fc04ff492149b6e810e3f583507ddd800e0",
+  "commitDate": "2026-07-06T16:42:54Z",
+  "syncedAt": "2026-07-16T06:20:24.866Z",
+  "scope": "aip/general",
+  "count": 72,
+  "transformation": "Formatted with Oxfmt",
+  "licenses": {
+    "content": {
+      "name": "Creative Commons Attribution 4.0 International",
+      "url": "https://creativecommons.org/licenses/by/4.0/"
+    },
+    "codeSamples": {
+      "name": "Apache License 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    }
+  }
+}
