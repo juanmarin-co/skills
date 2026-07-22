@@ -94,7 +94,7 @@ function writeCatalog(aips) {
 }
 
 function formatReferences() {
-  execFileSync("corepack", ["pnpm", "exec", "oxfmt", aipsDirectory, catalogPath, "--write"], {
+  execFileSync("pnpm", ["exec", "oxfmt", aipsDirectory, catalogPath, "--write"], {
     cwd: repositoryDirectory,
     stdio: "inherit",
   });
