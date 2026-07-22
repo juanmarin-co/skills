@@ -1,0 +1,4 @@
+interface:
+  display_name: "Terraform Provider Docs"
+  short_description: "Retrieve version-specific Terraform provider documentation"
+  default_prompt: "Find authoritative provider documentation for this Terraform task."
