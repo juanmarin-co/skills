@@ -19,6 +19,7 @@ const branch = "master";
 const scope = "aip/general";
 
 const skillDirectory = fileURLToPath(new URL("../", import.meta.url));
+const repositoryDirectory = fileURLToPath(new URL("../../../", import.meta.url));
 const referencesDirectory = join(skillDirectory, "references");
 const aipsDirectory = join(referencesDirectory, "aips");
 const catalogPath = join(referencesDirectory, "catalog.md");
@@ -33,11 +34,12 @@ function synchronize() {
     cloneUpstream();
     const aips = loadGeneralAips();
     const revision = readSourceRevision();
+    const previousProvenance = readPreviousProvenance();
 
     mirrorGeneralAips();
     writeCatalog(aips);
     formatReferences();
-    writeProvenance(aips.length, revision);
+    writeProvenance(aips.length, revision, previousProvenance);
 
     console.log(`Synced ${aips.length} general AIPs at ${revision.commit.slice(0, 12)}.`);
   } finally {
@@ -65,7 +67,17 @@ function readSourceRevision() {
   return {
     commit: runGit("rev-parse", "HEAD"),
     commitDate: runGit("show", "-s", "--format=%cI", "HEAD"),
+    tree: runGit("rev-parse", `HEAD:${scope}`),
   };
+}
+
+function readPreviousProvenance() {
+  try {
+    return JSON.parse(readFileSync(join(skillDirectory, "provenance.json"), "utf8"));
+  } catch (error) {
+    if (error.code === "ENOENT") return null;
+    throw error;
+  }
 }
 
 function mirrorGeneralAips() {
@@ -82,17 +94,24 @@ function writeCatalog(aips) {
 }
 
 function formatReferences() {
-  execFileSync("vp", ["fmt", aipsDirectory, catalogPath, "--write"], {
+  execFileSync("corepack", ["pnpm", "exec", "oxfmt", aipsDirectory, catalogPath, "--write"], {
+    cwd: repositoryDirectory,
     stdio: "inherit",
   });
 }
 
-function writeProvenance(count, revision) {
+function writeProvenance(count, revision, previousProvenance) {
+  const scopeIsUnchanged =
+    previousProvenance?.tree === revision.tree ||
+    (!previousProvenance?.tree && previousProvenance?.commit === revision.commit);
+  const recordedRevision = scopeIsUnchanged ? previousProvenance : revision;
   const provenance = {
     source: repository,
     branch,
-    ...revision,
-    syncedAt: new Date().toISOString(),
+    commit: recordedRevision.commit,
+    commitDate: recordedRevision.commitDate,
+    tree: revision.tree,
+    syncedAt: scopeIsUnchanged ? previousProvenance.syncedAt : new Date().toISOString(),
     scope,
     count,
     transformation: "Formatted with Oxfmt",
