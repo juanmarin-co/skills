@@ -2,6 +2,7 @@
 
 const REGISTRY_URL = "https://registry.terraform.io";
 const PAGE_SIZE = 100;
+const REQUEST_TIMEOUT_MS = 30_000;
 
 async function main() {
   const [command, ...args] = process.argv.slice(2);
@@ -22,7 +23,7 @@ async function main() {
 }
 
 async function discover(args) {
-  if (args.length !== 2) {
+  if (args.length !== 2 || args.some((arg) => arg.length === 0)) {
     throw usageError();
   }
 
@@ -66,7 +67,9 @@ async function resolveLatestVersion(provider) {
   const response = await requestJson(`${REGISTRY_URL}/v1/providers/${namespace}/${name}`);
 
   if (typeof response.version !== "string" || response.version.length === 0) {
-    throw new Error(`Could not resolve the latest version of ${provider.namespace}/${provider.name}`);
+    throw new Error(
+      `Could not resolve the latest version of ${provider.namespace}/${provider.name}`,
+    );
   }
 
   return response.version;
@@ -90,7 +93,9 @@ async function resolveVersionId(provider, version) {
   });
 
   if (!match) {
-    throw new Error(`Provider version not found: ${provider.namespace}/${provider.name} ${version}`);
+    throw new Error(
+      `Provider version not found: ${provider.namespace}/${provider.name} ${version}`,
+    );
   }
 
   return match.id;
@@ -140,6 +145,10 @@ async function listDocuments(versionId) {
 }
 
 function normalizeDocument(item) {
+  if (item?.id === undefined || item?.id === null) {
+    throw new Error("Registry returned a provider document without an id");
+  }
+
   const attributes = item.attributes ?? {};
 
   return {
@@ -165,32 +174,59 @@ function parseProviderAddress(address) {
 }
 
 async function requestJson(input) {
-  const response = await fetch(input, {
-    headers: {
-      accept: "application/json",
-      "user-agent": "terraform-provider-docs-skill",
-    },
-  });
+  let response;
+
+  try {
+    response = await fetch(input, {
+      headers: {
+        accept: "application/json",
+        "user-agent": "terraform-provider-docs-skill",
+      },
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    });
+  } catch (error) {
+    const reason =
+      error.name === "TimeoutError"
+        ? `timed out after ${REQUEST_TIMEOUT_MS / 1000} seconds`
+        : error.message;
+    throw new Error(`Registry request failed for ${input}: ${reason}`);
+  }
+
   const text = await response.text();
   let body;
 
   try {
     body = JSON.parse(text);
   } catch {
-    throw new Error(`Registry returned invalid JSON (${response.status})`);
+    throw new Error(`Registry returned invalid JSON (${response.status}) for ${response.url}`);
   }
 
   if (!response.ok) {
-    let detail = text;
-
-    if (Array.isArray(body.errors)) {
-      detail = body.errors.join(", ");
-    }
-
+    const detail = formatRegistryError(body, text);
     throw new Error(`Registry request failed (${response.status}): ${detail}`);
   }
 
   return body;
+}
+
+function formatRegistryError(body, fallback) {
+  if (!Array.isArray(body?.errors)) {
+    return truncate(fallback);
+  }
+
+  const detail = body.errors
+    .map((error) => {
+      if (typeof error === "string") return error;
+      return error?.detail ?? error?.title ?? JSON.stringify(error);
+    })
+    .join(", ");
+
+  return truncate(detail);
+}
+
+function truncate(value) {
+  const normalized = String(value).replaceAll(/\s+/g, " ").trim();
+  return normalized.length > 500 ? `${normalized.slice(0, 497)}...` : normalized;
 }
 
 function usageError() {

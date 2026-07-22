@@ -1,32 +1,25 @@
 ---
 name: google-aip
-description: >
-  Google API Improvement Proposals (AIP) guidelines for designing gRPC/protobuf APIs.
-  Consult this skill before adding, modifying, or reviewing RPC methods in .proto files.
-  Trigger for resource-oriented API design, standard or custom methods, pagination,
-  filtering, soft delete, long-running operations, AIP compliance reviews, or questions
-  about a specific AIP.
+description: Design and review gRPC and Protocol Buffer APIs against Google API Improvement Proposals (AIPs). Use when adding or changing .proto resources, RPCs, standard or custom methods, pagination, filtering, field masks, long-running operations, soft delete, versioning, or when an AIP number or compliance review is mentioned. Do not use for protobuf syntax, code generation, or implementation unless AIP guidance is the task.
 ---
 
-# Google AIP Skill
+# Google AIP
 
-Use Google AIPs when designing or reviewing protobuf APIs.
+Apply the bundled Google AIPs when designing or reviewing protobuf APIs.
 
 ## Workflow
 
-1. Identify relevant AIPs using `references/catalog.md`.
-2. Read only those documents from `references/aips/{NUMBER}.md`, where `{NUMBER}` is
-   zero-padded (for example, `0132.md`).
-3. Apply their guidance and cite AIP numbers in findings or recommendations.
+1. Inspect the request and the relevant API definitions.
+2. Search `references/catalog.md` for the concepts involved. Use `rg` or another text search instead of loading the entire catalog when possible.
+3. Read only the matching documents from `references/aips/{NUMBER}.md`, using four-digit numbers such as `0132.md`.
+4. Apply the full AIP text, not the catalog preview. Account for each AIP's state and distinguish normative guidance from examples.
+5. When established API precedent conflicts with newer guidance, read AIP-0200 before recommending a deviation.
+6. Cite AIP numbers in the result and separate required changes, recommendations, and intentional deviations.
 
-Catalog previews contain each AIP's complete first prose paragraph, with Markdown
-removed and whitespace normalized.
+## Resources
 
-## Source
+- `references/catalog.md`: searchable index with state, title, and a prose preview.
+- `references/aips/`: complete local AIP documents.
+- `references/provenance.json`: upstream revision, transformation, and license details.
 
-The local AIPs are sourced from
-[`aip-dev/google.aip.dev`](https://github.com/aip-dev/google.aip.dev) and formatted with
-Oxfmt; the source revision and transformation are recorded in `provenance.json`. AIP
-content is licensed under
-[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), and code samples are licensed
-under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+Refresh the bundled documents only when requested by running `node scripts/sync.mjs` from the skill directory.
