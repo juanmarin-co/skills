@@ -185,10 +185,12 @@ async function requestJson(input) {
       signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
     });
   } catch (error) {
-    const reason =
-      error.name === "TimeoutError"
-        ? `timed out after ${REQUEST_TIMEOUT_MS / 1000} seconds`
-        : error.message;
+    let reason = error.message;
+
+    if (error.name === "TimeoutError") {
+      reason = `timed out after ${REQUEST_TIMEOUT_MS / 1000} seconds`;
+    }
+
     throw new Error(`Registry request failed for ${input}: ${reason}`);
   }
 
@@ -226,7 +228,12 @@ function formatRegistryError(body, fallback) {
 
 function truncate(value) {
   const normalized = String(value).replaceAll(/\s+/g, " ").trim();
-  return normalized.length > 500 ? `${normalized.slice(0, 497)}...` : normalized;
+
+  if (normalized.length <= 500) {
+    return normalized;
+  }
+
+  return `${normalized.slice(0, 497)}...`;
 }
 
 function usageError() {

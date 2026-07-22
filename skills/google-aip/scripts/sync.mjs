@@ -121,14 +121,21 @@ function writeProvenance(count, revision, previousProvenance) {
   const scopeIsUnchanged =
     previousProvenance?.tree === revision.tree ||
     (!previousProvenance?.tree && previousProvenance?.commit === revision.commit);
-  const recordedRevision = scopeIsUnchanged ? previousProvenance : revision;
+  let recordedRevision = revision;
+  let syncedAt = new Date().toISOString();
+
+  if (scopeIsUnchanged) {
+    recordedRevision = previousProvenance;
+    syncedAt = previousProvenance.syncedAt;
+  }
+
   const provenance = {
     source: repository,
     branch,
     commit: recordedRevision.commit,
     commitDate: recordedRevision.commitDate,
     tree: revision.tree,
-    syncedAt: scopeIsUnchanged ? previousProvenance.syncedAt : new Date().toISOString(),
+    syncedAt,
     scope,
     count,
     transformation: "Formatted with Oxfmt",
