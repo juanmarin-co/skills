@@ -2,7 +2,7 @@
   "name": "skills",
   "private": true,
   "scripts": {
-    "sync:google-aip": "node skills/google-aip/scripts/sync.mjs"
+    "sync:google-aip": "node scripts/sync-google-aip.mjs"
   },
   "devDependencies": {
     "oxfmt": "^0.59.0"

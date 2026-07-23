@@ -21,5 +21,3 @@ Apply the bundled Google AIPs when designing or reviewing protobuf APIs.
 - `references/catalog.md`: searchable index with state, title, and a prose preview.
 - `references/aips/`: complete local AIP documents.
 - `references/provenance.json`: upstream revision, transformation, and license details.
-
-Refresh the bundled documents only when requested by running `node scripts/sync.mjs` from the skill directory.
