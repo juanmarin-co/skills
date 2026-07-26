@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dependency Docs"
+  short_description: "Answer from version-matched dependency repositories"
+  default_prompt: "Use $dependency-docs to answer this dependency question from its version-matched upstream repository."
