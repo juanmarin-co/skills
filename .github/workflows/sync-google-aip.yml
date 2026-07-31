@@ -40,15 +40,15 @@ jobs:
         env:
           TARGET_BRANCH: ${{ github.ref_name }}
         run: |
-          if git diff --quiet -- skills/google-aip/references skills/google-aip/provenance.json; then
+          if git diff --quiet -- skills/google-aip/references; then
             echo "Google AIPs are already up to date."
             exit 0
           fi
 
-          upstream_commit=$(node -p "require('./skills/google-aip/provenance.json').commit")
+          upstream_commit=$(node -p "require('./skills/google-aip/references/provenance.json').commit")
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add skills/google-aip/references skills/google-aip/provenance.json
+          git add skills/google-aip/references
           git commit \
             -m "chore(google-aip): sync upstream AIPs" \
             -m "Upstream commit: ${upstream_commit}"
