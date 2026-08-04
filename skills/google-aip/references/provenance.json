@@ -1,13 +1,25 @@
 {
   "source": "https://github.com/aip-dev/google.aip.dev",
   "branch": "master",
-  "commit": "74755fc04ff492149b6e810e3f583507ddd800e0",
-  "commitDate": "2026-07-06T16:42:54Z",
+  "commit": "b38f24615f8f3b9e90d72f06df9d712a4f893ed7",
+  "commitDate": "2026-07-24T15:20:17-07:00",
   "tree": "21fcabe1afdb8dce9a60cefefeed5e3e7c535f05",
-  "syncedAt": "2026-07-16T06:20:24.866Z",
+  "website": {
+    "branch": "gh-pages",
+    "commit": "eeed05258b813936abe90885236e5b1fcbb4b2e1",
+    "commitDate": "2026-07-24T22:35:52Z"
+  },
+  "syncedAt": "2026-08-04T16:02:18.928Z",
   "scope": "aip/general",
   "count": 72,
-  "transformation": "Formatted with Oxfmt",
+  "transformation": "Formatted with Oxfmt; repository-local links resolved and bundled",
+  "dependencies": {
+    "contentHash": "f1a573fba3b8b90dc200e830bebfbfcda07c1c898b5cc8fc89bea7b179b0a079",
+    "count": 1,
+    "files": [
+      "gh-pages:assets/misc/ebnf-filtering.txt"
+    ]
+  },
   "licenses": {
     "content": {
       "name": "Creative Commons Attribution 4.0 International",
