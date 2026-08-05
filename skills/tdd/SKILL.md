@@ -1,50 +1,49 @@
 ---
 name: tdd
-description: Run TDD one observable behavior at a time. Use for test-first development and red-green-refactor.
+description: Use test-driven development and red-green-refactor for feature development, behavior changes, and regression fixes.
 ---
 
 # Test-Driven Development
 
-Develop one observable behavior at a time. A **seam** is the public boundary where a test observes behavior without reaching inside. A **tracer bullet** is one small test-to-working-code cycle: test one behavior, make it pass, learn, then choose the next.
+Work through **seams** and **tracer bullets**.
 
-Tests may be unit, integration, or end-to-end. Choose by behavior, not preference.
+A **seam** is an interface through which callers or users observe behavior. Test through it rather than private methods or state.
+
+A **tracer bullet** is one red-green cycle through a seam. It may contain any number of tests.
+
+Each bullet costs model turns and tokens. Group tests when their expectations are clear and implementing some would not help write the others. Split them when feedback could change the remaining tests, seam, or implementation direction. Reduce cycles, not coverage; never target a test count. Edit grouped tests together, not one at a time.
+
+Choose unit, integration, or end-to-end scope by behavior, without unnecessary implementation dependence.
 
 ## Start
 
-1. If no mode was given, ask the user to choose **Guided**, **Checkpoint**, or **Autonomous**.
-2. Read relevant tests first, then related code. Run them when practical to establish a baseline; report existing failures.
-3. Propose test seams before editing. Name each public interface, intended behavior, recommended scope, and why. Name the first tracer bullet and ask the user to confirm. Do not design every test upfront.
+1. Use **Checkpoint** unless the user requests **Guided** or **Autonomous**.
+2. Read relevant tests, then code. Run a baseline once when practical and report existing failures.
+3. State the affected seams, behavior, scope, first bullet, and why its tests belong together or separately. Confirm in Guided mode. Otherwise proceed, but ask before materially changing a seam.
 
-Test only at confirmed seams. Ask before materially changing them.
+Plan only the current bullet, not the entire suite.
 
 ## Loop
 
-Before each increment, briefly state:
+Before each bullet, briefly state its behavior, coverage decision, seam, and grouping reason. Then:
 
-- the behavior or cleanup;
-- the coverage decision and why;
-- the public interface under test, if any;
-- why this is the next smallest useful move.
+1. Choose the next useful behavior from what is known.
+2. Add, update, consolidate, delete, or leave coverage unchanged. Change it only for new, changed, or uncovered behavior. Improve existing tests instead of adding redundant ones; never test only to prove an internal change.
+3. If coverage need not change, work while green and run affected tests without weakening coverage.
+4. Otherwise, write the selected tests together before implementation. Give each a behavior name and independent expected values. Prefer exact results unless omitted values are irrelevant. Avoid implementation checks and excessive mocking.
+5. Run focused tests together. Confirm changed coverage fails for the expected reason. If a test passes, investigate whether behavior exists or the test is redundant or invalid.
+6. Write only enough implementation to pass.
+7. Run focused and affected tests together when practical and get to green.
+8. Choose the next bullet from what this one taught. Defer uncertain or unrelated tests.
 
-This is a progress update, not a review gate unless the mode says so.
-
-1. Pick the smallest behavior or cleanup that advances the change or reduces risk.
-2. Decide whether to add, update, consolidate, delete, or leave coverage unchanged. Change it only for new, changed, or uncovered behavior. Improve existing tests instead of adding redundant ones. Never test merely to prove an internal change.
-3. If no new behavior coverage is needed, make the code or test cleanup while green and run affected tests without weakening coverage.
-4. If behavior coverage is needed, add or update one test for one behavior through the agreed seam. Use a behavior name and independent expected values. Prefer exact result matching over truthy, existence, partial, or loose matching unless omitted values are irrelevant. Avoid implementation checks and over-mocking.
-5. Run the focused test and ensure it fails for the expected reason. If it passes, investigate instead of implementing.
-6. Write only enough code to pass. Run the focused test, then affected tests, and get to green.
-7. Refactor only while green without changing behavior or weakening coverage, then rerun. Defer broad restructuring to seam review.
-8. Choose the next tracer bullet from what the last cycle taught. Add only meaningful edge cases.
-
-Do not write all tests upfront. At seam completion, run the broader relevant suite.
+After completing a seam, refactor and simplify while green, then run the relevant suite.
 
 ## Modes
 
-Modes only control review cadence:
+Modes control user review:
 
-- **Guided:** pause after each tracer bullet or no-test cleanup.
-- **Checkpoint:** pause after each completed seam.
+- **Guided:** pause after each bullet and after seam refactoring.
+- **Checkpoint:** pause after each seam.
 - **Autonomous:** pause at completion.
 
-At a review gate, report behavior, coverage, test results, refactoring, and the next tracer bullet or seam. Always pause for blockers or material seam changes.
+Report behavior, coverage, results, refactoring, and what comes next. Always pause for blockers or material seam changes.
