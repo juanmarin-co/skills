@@ -9,6 +9,8 @@ Work through **seams** and **tracer bullets**.
 
 A **seam** is an interface through which callers or users observe behavior. Test through it rather than private methods or state.
 
+**Test only at pre-agreed seams.**
+
 A **tracer bullet** is one red-green cycle through a seam. It may contain any number of tests.
 
 Each bullet costs model turns and tokens. Group tests when their expectations are clear and implementing some would not help write the others. Split them when feedback could change the remaining tests, seam, or implementation direction. Reduce cycles, not coverage; never target a test count. Edit grouped tests together, not one at a time.
@@ -19,7 +21,7 @@ Choose unit, integration, or end-to-end scope by behavior, without unnecessary i
 
 1. Use **Checkpoint** unless the user requests **Guided** or **Autonomous**.
 2. Read relevant tests, then code. Run a baseline once when practical and report existing failures.
-3. State the affected seams, behavior, scope, first bullet, and why its tests belong together or separately. Confirm in Guided mode. Otherwise proceed, but ask before materially changing a seam.
+3. Propose the affected seams, behavior, scope, first bullet, and why its tests belong together or separately. Confirm them before writing tests; pause to confirm any later seam.
 
 Plan only the current bullet, not the entire suite.
 
