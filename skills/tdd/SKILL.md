@@ -33,7 +33,7 @@ Before each bullet, briefly state its behavior, coverage decision, seam, and gro
 2. Keep tests compact, not append-only. Cover new, changed, or uncovered behavior by first updating existing tests when clear. Delete or consolidate obsolete tests and duplicates with no useful feedback. Never delete merely to get green or add tests for internal changes alone.
 3. If coverage need not change, work while green and run affected tests without weakening coverage.
 4. Otherwise, write the selected tests together before implementation. Give each a behavior name and independent expected values. Prefer exact results unless omitted values are irrelevant. Avoid implementation checks and excessive mocking.
-5. Run focused tests together. Confirm changed coverage fails for the expected reason. If a test passes, investigate whether behavior exists or the test is redundant or invalid.
+5. Run focused tests together. Red requires changed tests to execute and fail because behavior is absent—not because compilation or setup failed. Fix only enough to run them, then rerun before implementing. Compilation failures count only when compilation itself is the behavior being tested. If a new test passes before implementation, determine why before continuing.
 6. Write only enough implementation to pass.
 7. Run focused and affected tests together when practical and get to green.
 8. Choose the next bullet from what this one taught. Defer uncertain or unrelated tests.
