@@ -1,4 +1,4 @@
 interface:
-  display_name: "Dependency Docs"
-  short_description: "Answer from version-matched dependency repositories"
-  default_prompt: "Use $dependency-docs to answer this dependency question from its version-matched upstream repository."
+  display_name: "Dependency Documentation"
+  short_description: "Find reliable dependency documentation and source"
+  default_prompt: "Use $dependency-docs to find reliable documentation for this dependency."
