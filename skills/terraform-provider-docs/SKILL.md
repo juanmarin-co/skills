@@ -1,54 +1,34 @@
 ---
 name: terraform-provider-docs
-description: Retrieve and compare version-specific documentation for public Terraform Registry providers. Use for provider configuration, resources, data sources, functions, imports, arguments, attributes, examples, or checking a locked provider version against latest. Do not use for Terraform language or CLI, modules, private providers, or provider development.
+description: Use when configuration or reference documentation for a public Terraform Registry provider is needed.
 ---
 
-# Terraform Provider Docs
-
-Retrieve authoritative, version-specific provider documentation from the public Terraform Registry.
+# Terraform Provider Documentation
 
 ## Workflow
 
-1. Determine the provider source address and requested capability. Prefer the `source` in `required_providers`; do not infer an address from a local provider name when an explicit source exists.
-2. Use an explicit version when supplied. Otherwise, read the selected version from `.terraform.lock.hcl`. Treat a configuration constraint as a constraint, not a selected version.
-3. If a selected version exists, discover it and `latest`; skip duplicate work when both resolve to the same version. Without a selected version, discover only `latest` and disclose that no locked version was available.
-4. Filter document indexes by `category`, `slug`, `title`, and `subcategory`. Do not assume a Terraform type name equals its documentation slug. Fetch plausible candidates when metadata is ambiguous.
-5. Answer from the selected-version document first. Never silently substitute latest documentation for a locked or requested version.
-6. If the selected version lacks the capability, inspect latest. State whether latest adds it and identify upgrade risk; do not claim an upgrade is safe without checking the provider's release or migration guidance.
-7. Report the provider address, exact documentation version, document title, and Registry URL when an exact URL can be established.
+1. Find the provider address and the requested topic. Use the `source` in `required_providers`; do not guess from the provider's local name.
+2. Resolve the documentation version from the user's request or `.terraform.lock.hcl`. A version constraint does not identify one exact version. If neither is available, use `latest` and say so.
+3. Run `discover` for that provider and version. Search the result by category, slug, title, and subcategory. Fetch all likely matches when the result is unclear.
+4. Answer from the resolved version. Do not replace it with `latest`.
+5. Check `latest` only when the user asks for a comparison or the resolved version lacks the requested feature. Skip this when the versions are the same. If `latest` adds the feature, explain that an upgrade is required and check release or migration guidance before commenting on upgrade safety.
+6. Include the provider address, documentation version, document title, and Registry URL when it can be determined.
 
-## Script
+## Commands
 
-Resolve paths relative to this `SKILL.md`, then run:
+Resolve paths relative to this `SKILL.md`:
 
 ```bash
 node <skill-directory>/scripts/provider-docs.mjs discover <namespace/provider> <version|latest>
 node <skill-directory>/scripts/provider-docs.mjs fetch <document-id>
 ```
 
-`discover` follows pagination and writes:
+`discover` returns the provider version and a documentation index with each document's ID, category, slug, title, and subcategory. Use `fetch` with a document ID to read its Markdown.
 
-```json
-{
-  "provider": "namespace/provider",
-  "version": "1.2.3",
-  "documents": [
-    {
-      "id": "123",
-      "category": "resources",
-      "slug": "example",
-      "title": "example",
-      "subcategory": null
-    }
-  ]
-}
-```
+## Rules
 
-Filter the `documents` array before calling `fetch`. The fetch command writes raw Markdown to stdout. Errors go to stderr and return a nonzero exit code.
-
-## Limitations
-
-- Supports public providers on `registry.terraform.io` only.
-- Requires network access and a Node.js runtime with built-in `fetch`.
-- Uses the Registry's undocumented internal v2 provider-doc endpoints. They may change without notice.
-- Has no cache or alternate source fallback.
+- Use this skill only for public providers on `registry.terraform.io`, not Terraform language, CLI, modules, private providers, or provider development.
+- Do not change the user's project while resolving the provider or version.
+- Do not use memory or unmatched documentation in place of documentation for the resolved version.
+- If reliable documentation cannot be retrieved, stop and explain why.
+- The script requires Node.js and network access. It uses Registry endpoints that may change without notice.
