@@ -3,8 +3,6 @@ name: google-aip
 description: Design and review gRPC and Protocol Buffer APIs against Google API Improvement Proposals (AIPs). Use when adding or changing .proto resources, RPCs, standard or custom methods, pagination, filtering, field masks, long-running operations, soft delete, versioning, or when an AIP number or compliance review is mentioned. Do not use for protobuf syntax, code generation, or implementation unless AIP guidance is the task.
 ---
 
-# Google AIP
-
 Apply the bundled Google AIPs when designing or reviewing protobuf APIs.
 
 ## Workflow

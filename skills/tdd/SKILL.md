@@ -3,8 +3,6 @@ name: tdd
 description: Use test-driven development and red-green-refactor for feature development, behavior changes, and regression fixes.
 ---
 
-# Test-Driven Development
-
 Work through **seams** and **tracer bullets**.
 
 A **seam** is an interface through which callers or users observe behavior. Test through it rather than private methods or state.
