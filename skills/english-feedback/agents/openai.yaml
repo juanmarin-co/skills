@@ -1,0 +1,4 @@
+interface:
+  display_name: "English Feedback"
+  short_description: "Review conversational English and suggest improvements"
+  default_prompt: "Use $english-feedback to review my English from this conversation."
