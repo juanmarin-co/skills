@@ -4,6 +4,6 @@ description: Break implementation work into small, verifiable vertical slices.
 disable-model-invocation: true
 ---
 
-Break the work into vertical slices, each delivering one complete behavior across all relevant layers, including tests. Organize around outcomes rather than separate tasks such as “build the API” and “build the UI.”
+Draft a sequence of vertical slices. Each slice should take one behavior through all relevant layers and tests. Unlike a horizontal slice, which stays within one layer, a vertical slice produces a complete result.
 
-Each slice should be independently verifiable and fit within one fresh context window. State what it delivers and how to verify it. Place necessary preparatory refactoring first.
+Keep each slice small enough for one fresh context window and independently verifiable. Describe its result and verification method. If prefactoring is needed, place it before the slices.
