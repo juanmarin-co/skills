@@ -1,20 +1,20 @@
 {
   "source": "https://github.com/aip-dev/google.aip.dev",
   "branch": "master",
-  "commit": "23e176e7333ea3bc6b085f9950a5da03d2bbfc72",
-  "commitDate": "2026-08-17T15:25:32-07:00",
-  "tree": "e309cfb11b800887c706fd2c070edb9b162e76ce",
+  "commit": "2ccc61a4e09882bdd63aea1a42dceebc37bf3bd5",
+  "commitDate": "2026-10-15T22:32:30Z",
+  "tree": "f50b84091ac792491d7ef9925451895221b75bdd",
   "website": {
     "branch": "gh-pages",
-    "commit": "d8659cc83af9b219ec3973bbd09e2963079e1519",
-    "commitDate": "2026-08-17T22:33:45Z"
+    "commit": "cf3266a8c7a28b65ed55a2f706d00dd6ae09d19a",
+    "commitDate": "2026-10-15T22:35:58Z"
   },
-  "syncedAt": "2026-08-18T09:27:23.092Z",
+  "syncedAt": "2026-10-16T09:29:32.797Z",
   "scope": "aip/general",
   "count": 73,
   "transformation": "Formatted with Oxfmt; repository-local links resolved and bundled",
   "dependencies": {
-    "contentHash": "96e1c7196365a27f127df404bcfab18021ca0ada727ede6dc06c566998878fd2",
+    "contentHash": "df943916bfe42503f0c6bd7266fda5430fc472e75cde861958e0dabc947dec9b",
     "count": 1,
     "files": [
       "gh-pages:assets/misc/ebnf-filtering.txt"
